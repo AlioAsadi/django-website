@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">خانه</a></li>
+      <li class="breadcrumb-item"><a href="/categories/">دسته‌بندی‌ها</a></li>
+      <li class="breadcrumb-item">
+        <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <div class="ratio ratio-1x1 rounded overflow-hidden bg-light d-flex align-items-center justify-content-center">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+            {% else %}
+              <div class="text-center text-muted">
+                <i class="bi bi-image fs-1"></i>
+                <div class="mt-2">تصویر محصول</div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-7">
+      <div class="d-flex align-items-start justify-content-between gap-3">
+        <div>
+          <h1 class="h4 mb-2">{{ product.name }}</h1>
+          <div class="text-muted small">
+            دسته‌بندی: <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+          </div>
+        </div>
+
+        {% if product.inventory %}
+          <span class="badge fs-6 {% if product.inventory.status == 'in_stock' %}bg-success{% elif product.inventory.status == 'limited' %}bg-warning text-dark{% else %}bg-danger{% endif %}">
+            {{ product.inventory.get_status_display }}
+          </span>
+        {% endif %}
+      </div>
+
+      <hr />
+
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <div class="info-tile">
+            <div class="text-muted small">وضعیت قیمت</div>
+            <div class="fw-semibold mt-1">
+              {% if product.call_for_price %}برای قیمت تماس بگیرید{% elif product.price %}{{ product.price }} تومان{% else %}برای قیمت تماس بگیرید{% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="info-tile">
+            <div class="text-muted small">آخرین بروزرسانی موجودی</div>
+            <div class="fw-semibold mt-1">
+              {% if product.inventory %}{{ product.inventory.updated_at|date:"Y/m/d H:i" }}{% else %}—{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <h2 class="h6">توضیحات</h2>
+        <p class="text-muted mb-0">{{ product.description|linebreaksbr }}</p>
+      </div>
+
+      <div class="mt-4 d-flex flex-wrap gap-2">
+        <a class="btn btn-primary btn-lg" href="tel:+982100000000">
+          <i class="bi bi-telephone"></i>
+          تماس برای استعلام
+        </a>
+        <a class="btn btn-outline-success btn-lg" href="https://wa.me/989000000000" target="_blank" rel="noopener">
+          <i class="bi bi-whatsapp"></i>
+          واتساپ
+        </a>
+        <a class="btn btn-outline-secondary btn-lg" href="/search/">
+          <i class="bi bi-search"></i>
+          جستجوی محصول دیگر
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% block title %}صفحه اصلی{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <!-- Hero / Banner (inspired by your reference sites) -->
+  <section class="hero mb-4">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner rounded-4 overflow-hidden">
+        <div class="carousel-item active">
+          <div class="hero-slide hero-slide--1">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <h1 class="hero-title">کاتالوگ محصولات شیمیایی، بهداشتی و آزمایشگاهی</h1>
+              <p class="hero-subtitle">استعلام سریع موجودی • دسته‌بندی واضح • تماس مستقیم</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-primary btn-lg" href="/categories/">
+                  مشاهده دسته‌بندی‌ها
+                </a>
+                <a class="btn btn-outline-light btn-lg" href="tel:+982100000000">
+                  تماس با شرکت
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="hero-slide hero-slide--2">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+              <h2 class="hero-title">جستجوی سریع محصول</h2>
+              <p class="hero-subtitle">نام محصول را وارد کنید تا وضعیت موجودی را ببینید.</p>
+              <a class="btn btn-primary btn-lg" href="/search/">رفتن به جستجو</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">قبلی</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">بعدی</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Feature strip -->
+  <section class="row g-3 mb-4">
+    <div class="col-12 col-md-3">
+      <div class="feature-box">
+        <i class="bi bi-lightning-charge"></i>
+        <div>
+          <div class="fw-semibold">استعلام سریع</div>
+          <div class="text-muted small">موجودی و وضعیت کالا</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="feature-box">
+        <i class="bi bi-people"></i>
+        <div>
+          <div class="fw-semibold">مناسب کاربران میانسال</div>
+          <div class="text-muted small">ساده، خوانا، بدون پیچیدگی</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="feature-box">
+        <i class="bi bi-phone"></i>
+        <div>
+          <div class="fw-semibold">تماس همیشه در دسترس</div>
+          <div class="text-muted small">دکمه شناور تماس/واتساپ</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-3">
+      <div class="feature-box">
+        <i class="bi bi-speedometer2"></i>
+        <div>
+          <div class="fw-semibold">سرعت بالا</div>
+          <div class="text-muted small">صفحات سبک و سریع</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category icons row (like chemimaterial reference) -->
+  <section class="mb-5">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h3 class="section-title m-0">دسته‌بندی محصولات</h3>
+      <a class="btn btn-sm btn-outline-primary" href="/categories/">مشاهده همه</a>
+    </div>
+
+    <div class="row g-3">
+      {% for c in categories %}
+      <div class="col-6 col-md-3 col-lg-2">
+        <a class="cat-icon-card" href="{{ c.get_absolute_url }}">
+          <span class="cat-icon"><i class="bi bi-grid"></i></span>
+          <span class="cat-name">{{ c.name }}</span>
+        </a>
+      </div>
+      {% empty %}
+      <!-- placeholder if no DB yet -->
+      {% for _ in "123456" %}
+      <div class="col-6 col-md-3 col-lg-2">
+        <a class="cat-icon-card" href="#">
+          <span class="cat-icon"><i class="bi bi-flask"></i></span>
+          <span class="cat-name">نمونه دسته</span>
+        </a>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Featured products (simple horizontal scroll like your references) -->
+  <section class="mb-5">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h3 class="section-title m-0">محصولات پیشنهادی</h3>
+      <a class="btn btn-sm btn-outline-primary" href="/search/">جستجوی بیشتر</a>
+    </div>
+
+    <div class="scroll-row">
+      {% for p in featured_products %}
+        {% include "partials/product_card.html" with product=p %}
+      {% empty %}
+        {% for _ in "12345678" %}
+          {% include "partials/product_card.html" %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- About highlight (like the big info card sections in references) -->
+  <section class="mb-5">
+    <div class="about-highlight p-4 p-md-5 rounded-4">
+      <div class="row align-items-center g-4">
+        <div class="col-12 col-md-5">
+          <div class="about-visual">
+            <i class="bi bi-droplet-half"></i>
+          </div>
+        </div>
+        <div class="col-12 col-md-7">
+          <h3 class="mb-2">چرا این سایت؟</h3>
+          <p class="text-muted mb-3">
+            هدف اصلی: نمایش موجودی محصولات به صورت آنلاین تا مشتری سریع تصمیم بگیرد و در صورت نیاز با شرکت تماس بگیرد.
+            این دقیقاً مطابق نیازهای کاربران میانسال و کسب‌وکارهای کوچک طراحی می‌شود.
+          </p>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary" href="/about/">درباره ما</a>
+            <a class="btn btn-outline-secondary" href="/search/">جستجوی محصول</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

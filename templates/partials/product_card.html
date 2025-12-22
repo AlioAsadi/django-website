@@ -1,0 +1,47 @@
+{# Reusable product card #}
+<div class="product-card card shadow-sm">
+  <div class="product-thumb">
+    {% if product and product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+    {% else %}
+      <div class="thumb-placeholder">
+        <i class="bi bi-box-seam"></i>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card-body">
+    <div class="product-name">
+      {{ product.name|default:"نام محصول نمونه" }}
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between mt-2">
+      {% if product and product.inventory %}
+        <span class="badge {% if product.inventory.status == 'in_stock' %}bg-success{% elif product.inventory.status == 'limited' %}bg-warning text-dark{% else %}bg-danger{% endif %}">
+          {{ product.inventory.get_status_display }}
+        </span>
+      {% else %}
+        <span class="badge bg-success">موجود</span>
+      {% endif %}
+
+      <span class="text-muted small">
+        {% if product and product.call_for_price %}
+          تماس بگیرید
+        {% elif product and product.price %}
+          {{ product.price }} تومان
+        {% else %}
+          برای قیمت تماس بگیرید
+        {% endif %}
+      </span>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <a class="btn btn-sm btn-outline-primary flex-grow-1" href="{% if product %}{{ product.get_absolute_url }}{% else %}#{% endif %}">
+        جزئیات
+      </a>
+      <a class="btn btn-sm btn-primary" href="tel:+982100000000" title="تماس">
+        <i class="bi bi-telephone"></i>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}محصولات{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div>
+      <h1 class="h4 m-0">
+        {% if category %}{{ category.name }}{% else %}محصولات{% endif %}
+      </h1>
+      {% if q %}
+        <div class="text-muted small mt-1">نتایج جستجو برای: <span class="fw-semibold">{{ q }}</span></div>
+      {% endif %}
+    </div>
+
+    <a class="btn btn-sm btn-outline-secondary" href="/categories/"><i class="bi bi-grid"></i> همه دسته‌ها</a>
+  </div>
+
+  <div class="row g-4">
+    <!-- Filters -->
+    <aside class="col-12 col-lg-3">
+      <div class="card sticky-lg-top" style="top: 120px;">
+        <div class="card-body">
+          <h2 class="h6">فیلترها</h2>
+
+          <form method="get" class="vstack gap-3">
+            <div>
+              <label class="form-label small text-muted">جستجو</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="نام محصول...">
+              </div>
+            </div>
+
+            <div>
+              <label class="form-label small text-muted">وضعیت موجودی</label>
+              <select class="form-select" name="stock">
+                <option value="">همه</option>
+                <option value="in_stock" {% if stock == "in_stock" %}selected{% endif %}>موجود</option>
+                <option value="limited" {% if stock == "limited" %}selected{% endif %}>محدود</option>
+                <option value="out_of_stock" {% if stock == "out_of_stock" %}selected{% endif %}>ناموجود</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="form-label small text-muted">مرتب‌سازی</label>
+              <select class="form-select" name="sort">
+                <option value="new" {% if sort == "new" %}selected{% endif %}>جدیدترین</option>
+                <option value="name" {% if sort == "name" %}selected{% endif %}>نام</option>
+              </select>
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">اعمال</button>
+          </form>
+
+          <hr class="my-3" />
+          <div class="small text-muted">
+            اگر نتیجه‌ای پیدا نکردید، با شرکت تماس بگیرید.
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product grid -->
+    <section class="col-12 col-lg-9">
+      <div class="row g-3">
+        {% for p in products %}
+          <div class="col-12 col-sm-6 col-xl-4">
+            {% include "partials/product_card.html" with product=p %}
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <div class="alert alert-light border">
+              محصولی پیدا نشد.
+              <a href="tel:+982100000000" class="alert-link">تماس بگیرید</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if is_paginated %}
+      <nav class="mt-4" aria-label="pagination">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ q }}&stock={{ stock }}&sort={{ sort }}">قبلی</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">قبلی</span></li>
+          {% endif %}
+
+          <li class="page-item disabled">
+            <span class="page-link">صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
+          </li>
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ q }}&stock={{ stock }}&sort={{ sort }}">بعدی</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">بعدی</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </section>
+  </div>
+</div>
+{% endblock %}
