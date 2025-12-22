@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<nav class="small text-muted mb-3">
+  <a class="text-decoration-none" href="{% url 'home' %}">خانه</a>
+  <span>/</span>
+  <a class="text-decoration-none" href="{% url 'articles:list' %}">مقالات</a>
+  <span>/</span>
+  <span>{{ article.title }}</span>
+</nav>
+
+<h1 class="h4 mb-3">{{ article.title }}</h1>
+<div class="border rounded p-3 bg-white">
+  {% if article.content %}
+    <div style="line-height: 2;">{{ article.content|linebreaks }}</div>
+  {% else %}
+    <p class="text-muted mb-0">(محتوای مقاله بعداً اضافه می‌شود.)</p>
+  {% endif %}
+</div>
+{% endblock %}

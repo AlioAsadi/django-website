@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "core.apps.CoreConfig",
     "catalog.apps.CatalogConfig",
     "api.apps.ApiConfig",
+    "articles.apps.ArticlesConfig"
 ]
 
 MIDDLEWARE = [

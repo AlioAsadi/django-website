@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}مقالات{% endblock %}
+
+{% block content %}
+<h1 class="h4 mb-3">مقالات</h1>
+<div class="row g-3">
+  {% for a in articles %}
+    <div class="col-12">
+      <div class="border rounded p-3 bg-white">
+        <h2 class="h6 mb-1">
+          <a class="text-decoration-none" href="{{ a.get_absolute_url }}">{{ a.title }}</a>
+        </h2>
+        <p class="text-muted mb-0">{{ a.summary|default:"(خلاصه مقاله بعداً اضافه می‌شود.)" }}</p>
+      </div>
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-light border mb-0">مقاله‌ای موجود نیست.</div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
