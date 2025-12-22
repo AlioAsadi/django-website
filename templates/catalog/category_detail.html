@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+  <nav class="small text-muted mb-2">
+    <a class="text-decoration-none" href="{% url 'home' %}">خانه</a>
+    <span>/</span>
+    <a class="text-decoration-none" href="{% url 'catalog:category_list' %}">دسته‌بندی‌ها</a>
+    <span>/</span>
+    <span>{{ category.name }}</span>
+  </nav>
+
+  <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
+    <div>
+      <h1 class="h4 mb-2">{{ category.name }}</h1>
+      {% if category.description %}
+        <p class="text-muted mb-0" style="max-width: 780px;">{{ category.description }}</p>
+      {% endif %}
+    </div>
+
+    <form class="d-flex gap-2" method="get" style="min-width: 280px;">
+      <input class="form-control" name="q" value="{{ request.GET.q }}" placeholder="جستجو در این دسته..." />
+      <button class="btn btn-primary">جستجو</button>
+    </form>
+  </div>
+</div>
+
+<div class="row g-3">
+  {% for product in products %}
+    <div class="col-6 col-md-4 col-lg-3">
+      {% include "partials/product_card.html" with product=product %}
+    </div>
+  {% empty %}
+    <div class="col-12">
+      <div class="alert alert-light border mb-0">
+        محصولی در این دسته پیدا نشد.
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

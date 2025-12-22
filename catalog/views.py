@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
 from .models import Category, Product
@@ -65,3 +66,46 @@ class ProductDetailView(DetailView):
 
     def get_queryset(self):
         return Product.objects.select_related("category").prefetch_related("inventory").filter(is_active=True)
+
+
+class CategoryDetailView(DetailView):
+    template_name = "catalog/category_detail.html"
+    model = Category
+    context_object_name = "category"
+    slug_field = "slug"
+    slug_url_kwarg = "slug"
+
+    def get_queryset(self):
+        return Category.objects.filter(is_active=True)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+
+        # products in this category + optional filtering like search
+        form = SearchForm(self.request.GET)
+        form.is_valid()
+
+        qs = (
+            Product.objects.filter(is_active=True, category=self.object)
+            .select_related("category")
+            .prefetch_related("inventory")
+        )
+
+        q = form.cleaned_data.get("q")
+        stock = form.cleaned_data.get("stock")
+        sort = form.cleaned_data.get("sort") or "new"
+
+        if q:
+            qs = qs.filter(name__icontains=q)
+
+        if stock:
+            qs = qs.filter(inventory__status=stock)
+
+        if sort == "name":
+            qs = qs.order_by("name")
+        else:
+            qs = qs.order_by("-updated_at")
+
+        ctx["products"] = qs
+        ctx["form"] = form
+        return ctx
