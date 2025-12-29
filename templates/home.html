@@ -89,34 +89,28 @@
     </div>
   </section>
 
-  <!-- Category icons row (like chemimaterial reference) -->
-  <section class="mb-5">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <h3 class="section-title m-0">دسته‌بندی محصولات</h3>
-      <a class="btn btn-sm btn-outline-primary" href="/categories/">مشاهده همه</a>
-    </div>
+  <!-- Categories (card grid instead of icon tiles) -->
+<section class="mb-5">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h3 class="section-title m-0">دسته‌بندی محصولات</h3>
+    <a class="btn btn-sm btn-outline-primary" href="/categories/">مشاهده همه</a>
+  </div>
 
-    <div class="row g-3">
-      {% for c in categories %}
-      <div class="col-6 col-md-3 col-lg-2">
-        <a class="cat-icon-card" href="{{ c.get_absolute_url }}">
-          <span class="cat-icon"><i class="bi bi-grid"></i></span>
-          <span class="cat-name">{{ c.name }}</span>
-        </a>
+  <div class="row g-3">
+    {% for c in categories %}
+      <div class="col-6 col-md-4 col-lg-3">
+        {% include "partials/category_card.html" with category=c %}
       </div>
-      {% empty %}
-      <!-- placeholder if no DB yet -->
-      {% for _ in "123456" %}
-      <div class="col-6 col-md-3 col-lg-2">
-        <a class="cat-icon-card" href="#">
-          <span class="cat-icon"><i class="bi bi-flask"></i></span>
-          <span class="cat-name">نمونه دسته</span>
-        </a>
-      </div>
+    {% empty %}
+      {% for _ in "12345678" %}
+        <div class="col-6 col-md-4 col-lg-3">
+          {% include "partials/category_card.html" %}
+        </div>
       {% endfor %}
-      {% endfor %}
-    </div>
-  </section>
+    {% endfor %}
+  </div>
+</section>
+
 
   <!-- Featured products (simple horizontal scroll like your references) -->
   <section class="mb-5">

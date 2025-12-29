@@ -201,6 +201,43 @@ body{
   min-height: 46px;
 }
 
+/* Category card thumb (home page + anywhere) */
+.category-thumb{
+  background: var(--surface-2);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category-thumb img{
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 14px;
+}
+
+/* Reuse placeholder but make it slightly shorter inside category cards */
+.category-thumb .thumb-placeholder{
+  height: 150px;
+}
+
+.category-name{
+  font-weight: 800;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  min-height: 44px; /* keeps cards aligned */
+}
+
+.category-desc{
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 38px; /* consistent height */
+}
+
+
 /* Category cards (list page) */
 .category-card{
   text-decoration: none;
@@ -314,6 +351,53 @@ body{
   z-index: 1040;
 }
 .back-to-top:hover{ opacity: 1; }
+
+/* =========================
+   Detail page media square
+   (Product + Category)
+   ========================= */
+
+/* Square frame: responsive, but locks to 420x420 on lg+ */
+.detail-media-square{
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;     /* makes it square on small screens */
+  background: #f8f9fa;
+  border-radius: 14px;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The image always fits inside the square without distortion */
+.detail-media-square img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;     /* IMPORTANT: no cropping, fits inside */
+  display: block;
+}
+
+/* Placeholder (if no image) */
+.detail-media-placeholder{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #adb5bd;
+  font-size: 2.2rem;
+}
+
+/* On desktop (lg and up), force EXACT 420x420 */
+@media (min-width: 992px){
+  .detail-media-square{
+    width: 420px;
+    height: 420px;
+    aspect-ratio: auto;
+  }
+}
 
 /* Small screens tweaks */
 @media (max-width: 576px){

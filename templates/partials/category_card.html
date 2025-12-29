@@ -1,0 +1,71 @@
+{% comment %} {# Reusable category card (landing page + anywhere else) #}
+<a class="category-card card shadow-sm"
+   href="{% if category %}{{ category.get_absolute_url }}{% else %}#{% endif %}">
+
+  <div class="category-thumb">
+    {% if category and category.image %}
+      <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
+    {% else %}
+      <div class="thumb-placeholder">
+        <i class="bi bi-grid"></i>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card-body">
+    <div class="category-name">
+      {{ category.name|default:"نام دسته نمونه" }}
+    </div>
+
+    <div class="category-desc text-muted small mt-1">
+      {% if category and category.description %}
+        {{ category.description|truncatechars:80 }}
+      {% else %}
+        مشاهده محصولات و موجودی این دسته
+      {% endif %}
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between mt-3">
+      <span class="text-muted small">
+        {% if category and category.products_count != None %}
+          {{ category.products_count }} محصول
+        {% else %}
+          —
+        {% endif %}
+      </span>
+
+      <span class="btn btn-sm btn-outline-primary">
+        مشاهده <i class="bi bi-arrow-left-short"></i>
+      </span>
+    </div>
+  </div>
+</a> {% endcomment %}
+
+
+{# Reusable product card #}
+<div class="product-card card shadow-sm">
+  <div class="product-thumb">
+    {% if category and category.image %}
+      <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-fluid">
+    {% else %}
+      <div class="thumb-placeholder">
+        <i class="bi bi-box-seam"></i>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="card-body">
+    <div class="product-name">
+      {{ category.name|default:"نام محصول نمونه" }}
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <a class="btn btn-sm btn-outline-primary flex-grow-1" href="{% if category %}{{ category.get_absolute_url }}{% else %}#{% endif %}">
+        جزئیات
+      </a>
+      <a class="btn btn-sm btn-primary" href="tel:+982100000000" title="تماس">
+        <i class="bi bi-telephone"></i>
+      </a>
+    </div>
+  </div>
+</div>
